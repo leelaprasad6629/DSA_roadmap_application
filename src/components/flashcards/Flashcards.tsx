@@ -3,10 +3,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { ChevronLeft, ChevronRight, RotateCcw, Layers, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { useStore } from '@/store/useStore';
-
-let flashcardsData: any[] = [];
-try { flashcardsData = require('@/data/flashcards').flashcards; } catch {}
-
+import { flashcards as flashcardsData } from '@/data/flashcards';
 export default function Flashcards() {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [flipped, setFlipped] = useState(false);

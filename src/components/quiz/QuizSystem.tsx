@@ -3,10 +3,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Brain, CheckCircle2, XCircle, RotateCcw } from 'lucide-react';
 import { useStore } from '@/store/useStore';
-
-let quizData: any[] = [];
-try { quizData = require('@/data/quizzes').quizQuestions; } catch {}
-
+import { quizQuestions as quizData } from '@/data/quizzes';
 export default function QuizSystem() {
   const [filterTopic, setFilterTopic] = useState('All');
   const [quizActive, setQuizActive] = useState(false);

@@ -3,10 +3,7 @@ import { Card } from '@/components/ui/Card';
 import { Bookmark, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { phases } from '@/data/phases';
-
-let problemsData: any[] = [];
-try { problemsData = require('@/data/problems').problems; } catch {}
-
+import { problems as problemsData } from '@/data/problems';
 export default function Bookmarks() {
   const bookmarks = useStore((s) => s.progress.bookmarks);
   const removeBookmark = useStore((s) => s.removeBookmark);

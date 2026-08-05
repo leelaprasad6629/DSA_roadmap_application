@@ -3,12 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Card } from '@/components/ui/Card';
 import { Search } from 'lucide-react';
 import { phases } from '@/data/phases';
-
-let problemsData: any[] = [];
-let flashcardsData: any[] = [];
-try { problemsData = require('@/data/problems').problems; } catch {}
-try { flashcardsData = require('@/data/flashcards').flashcards; } catch {}
-
+import { problems as problemsData } from '@/data/problems';
+import { flashcards as flashcardsData } from '@/data/flashcards';
 export default function GlobalSearch() {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();

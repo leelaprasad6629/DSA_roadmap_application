@@ -3,12 +3,9 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { useStore } from '@/store/useStore';
 import LanguageSelector from '@/components/topic/LanguageSelector';
-import { ArrowLeft, Lightbulb, ExternalLink, CheckCircle2, RotateCcw, X, Bookmark } from 'lucide-react';
+import { problems as problemsData } from '@/data/problems';
 import { useState } from 'react';
-
-let problemsData: any[] = [];
-try { problemsData = require('@/data/problems').problems; } catch {}
-
+import { ArrowLeft, Bookmark, ExternalLink, Lightbulb, CheckCircle2, RotateCcw, X } from 'lucide-react';
 export default function ProblemDetail() {
   const { problemId } = useParams();
   const navigate = useNavigate();
