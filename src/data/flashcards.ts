@@ -48,7 +48,7 @@ export const flashcards: Flashcard[] = [
     "category": "Algorithm",
     "difficulty": "Medium",
     "front": "Explain the Dutch National Flag Algorithm (3-way Partitioning).",
-    "back": "Used to sort an array of 0s, 1s, and 2s in O(N) time and O(1) space using three pointers: `low` (boundary for 0s), `mid` (current element), and `high` (boundary for 2s). Swap nums[mid] with nums[low] if 0 (increment both), swap with nums[high] if 2 (decrement high), or advance mid if 1."
+    "back": "Used to sort an array of 0s, 1s, and 2s in O(N) time and O(1) space using three references: `low` (boundary for 0s), `mid` (current element), and `high` (boundary for 2s). Swap nums[mid] with nums[low] if 0 (increment both), swap with nums[high] if 2 (decrement high), or advance mid if 1."
   },
   {
     "id": "arr-5",
@@ -120,7 +120,7 @@ export const flashcards: Flashcard[] = [
     "category": "Definition",
     "difficulty": "Easy",
     "front": "Compare Singly Linked List and Doubly Linked List in terms of memory and operations.",
-    "back": "Singly Linked List: Each node has data + `next` pointer (1 pointer overhead). Traversal is uni-directional.\nDoubly Linked List: Each node has data + `next` + `prev` pointers (2 pointer overhead). Allows bi-directional traversal and O(1) node deletion if the node pointer is known."
+    "back": "Singly Linked List: Each node has data + `next` reference (1 reference overhead). Traversal is uni-directional.\nDoubly Linked List: Each node has data + `next` + `prev` references (2 reference overhead). Allows bi-directional traversal and O(1) node deletion if the node reference is known."
   },
   {
     "id": "ll-2",
@@ -128,7 +128,7 @@ export const flashcards: Flashcard[] = [
     "category": "Algorithm",
     "difficulty": "Easy",
     "front": "Explain Floyd's Cycle Detection Algorithm (Tortoise and Hare).",
-    "back": "Use two pointers: `slow` moving 1 step and `fast` moving 2 steps. If a cycle exists, `fast` will eventually meet `slow` inside the loop in O(N) time and O(1) space. To find the cycle start, reset `slow` to head and move both pointers 1 step at a time until they meet."
+    "back": "Use two pointers: `slow` moving 1 step and `fast` moving 2 steps. If a cycle exists, `fast` will eventually meet `slow` inside the loop in O(N) time and O(1) space. To find the cycle start, reset `slow` to head and move both references 1 step at a time until they meet."
   },
   {
     "id": "ll-3",
@@ -136,7 +136,7 @@ export const flashcards: Flashcard[] = [
     "category": "Algorithm",
     "difficulty": "Medium",
     "front": "How do you reverse a Singly Linked List iteratively?",
-    "back": "Maintain three pointers: `prev = null`, `curr = head`, `next = null`.\nWhile `curr` is not null: store `next = curr.next`, point `curr.next = prev`, shift `prev = curr`, shift `curr = next`. Finally, return `prev` as the new head. Time O(N), Space O(1)."
+    "back": "Maintain three references: `prev = null`, `curr = head`, `next = null`.\nWhile `curr` is not null: store `next = curr.next`, point `curr.next = prev`, shift `prev = curr`, shift `curr = next`. Finally, return `prev` as the new head. Time O(N), Space O(1)."
   },
   {
     "id": "ll-4",
@@ -144,7 +144,7 @@ export const flashcards: Flashcard[] = [
     "category": "Trick",
     "difficulty": "Easy",
     "front": "How do you find the middle element of a Linked List in a single pass?",
-    "back": "Use Fast & Slow pointers: initialize `slow = head` and `fast = head`. Advance `slow` by 1 step and `fast` by 2 steps in each iteration. When `fast` reaches null (or `fast.next` is null), `slow` points to the middle node."
+    "back": "Use Fast & Slow references: initialize `slow = head` and `fast = head`. Advance `slow` by 1 step and `fast` by 2 steps in each iteration. When `fast` reaches null (or `fast.next` is null), `slow` points to the middle node."
   },
   {
     "id": "ll-5",
@@ -152,7 +152,7 @@ export const flashcards: Flashcard[] = [
     "category": "Algorithm",
     "difficulty": "Medium",
     "front": "How do you merge two sorted Linked Lists into a single sorted list?",
-    "back": "Use a dummy node and a pointer `tail`. Compare nodes of list1 and list2; append the smaller node to `tail.next` and advance that list pointer and `tail`. Once one list empties, attach remaining nodes of the non-empty list to `tail.next`. Time O(N + M), Space O(1)."
+    "back": "Use a dummy node and a reference `tail`. Compare nodes of list1 and list2; append the smaller node to `tail.next` and advance that list reference and `tail`. Once one list empties, attach remaining nodes of the non-empty list to `tail.next`. Time O(N + M), Space O(1)."
   },
   {
     "id": "ll-6",
@@ -160,7 +160,7 @@ export const flashcards: Flashcard[] = [
     "category": "Concept",
     "difficulty": "Hard",
     "front": "How do you implement an LRU Cache with O(1) get and put operations?",
-    "back": "Combine a Hash Map with a Doubly Linked List (DLL).\n\u2022 Map stores `key -> Node pointer` for O(1) lookups.\n\u2022 DLL maintains usage order (Most Recently Used at head, Least Recently Used at tail).\n\u2022 `get`: Move accessed node to head.\n\u2022 `put`: Add node at head. If capacity exceeded, remove node from tail and delete key from map."
+    "back": "Combine a Hash Map with a Doubly Linked List (DLL).\n\u2022 Map stores `key -> Node reference` for O(1) lookups.\n\u2022 DLL maintains usage order (Most Recently Used at head, Least Recently Used at tail).\n\u2022 `get`: Move accessed node to head.\n\u2022 `put`: Add node at head. If capacity exceeded, remove node from tail and delete key from map."
   },
   {
     "id": "tree-1",
@@ -296,7 +296,7 @@ export const flashcards: Flashcard[] = [
     "category": "Trick",
     "difficulty": "Hard",
     "front": "How can Longest Increasing Subsequence (LIS) be solved in O(N log N) time?",
-    "back": "Maintain an array `tails` where `tails[k]` stores the smallest tail of all increasing subsequences of length `k+1`. For each x in nums: binary search (std::lower_bound) for x in `tails`. If x is larger than all elements, append x. Otherwise replace first element >= x with x. Length of `tails` array is LIS."
+    "back": "Maintain an array `tails` where `tails[k]` stores the smallest tail of all increasing subsequences of length `k+1`. For each x in nums: binary search for x in `tails`. If x is larger than all elements, append x. Otherwise replace first element >= x with x. Length of `tails` array is LIS."
   },
   {
     "id": "dp-6",
@@ -672,7 +672,7 @@ export const flashcards: Flashcard[] = [
     "category": "Concept",
     "difficulty": "Medium",
     "front": "How is a Circular Queue implemented using a fixed-size array?",
-    "back": "Uses pointers `front` and `rear` with capacity `N`.\n\u2022 Advance pointers using modulo arithmetic: `rear = (rear + 1) % N` and `front = (front + 1) % N`.\n\u2022 Full condition: `(rear + 1) % N == front`.\n\u2022 Empty condition: `front == -1`."
+    "back": "Uses references `front` and `rear` with capacity `N`.\n\u2022 Advance references using modulo arithmetic: `rear = (rear + 1) % N` and `front = (front + 1) % N`.\n\u2022 Full condition: `(rear + 1) % N == front`.\n\u2022 Empty condition: `front == -1`."
   },
   {
     "id": "queue-3",
@@ -784,7 +784,7 @@ export const flashcards: Flashcard[] = [
     "category": "Concept",
     "difficulty": "Easy",
     "front": "What is the Two Pointers technique and when should it be applied?",
-    "back": "Uses two index pointers moving through a linear data structure (Array/String) in synchronized fashion.\nPatterns:\n1. **Opposite Ends**: `left = 0`, `right = n - 1` moving toward center (Sorted arrays, palindrome check, container water).\n2. **Same Direction**: Fast/Slow or Read/Write pointers (detecting cycles, in-place array modification)."
+    "back": "Uses two index references moving through a linear data structure (Array/String) in synchronized fashion.\nPatterns:\n1. **Opposite Ends**: `left = 0`, `right = n - 1` moving toward center (Sorted arrays, palindrome check, container water).\n2. **Same Direction**: Fast/Slow or Read/Write references (detecting cycles, in-place array modification)."
   },
   {
     "id": "tp-2",
@@ -800,7 +800,7 @@ export const flashcards: Flashcard[] = [
     "category": "Algorithm",
     "difficulty": "Medium",
     "front": "Explain Container With Most Water algorithm.",
-    "back": "Pointers `left = 0`, `right = n - 1`. Track `maxArea = 0`.\nAt each step: `area = min(height[left], height[right]) * (right - left)`. Update `maxArea`. Shift pointer pointing to smaller height inward (since width decreases, keeping smaller height guarantees area cannot increase). Time O(N), Space O(1)."
+    "back": "References `left = 0`, `right = n - 1`. Track `maxArea = 0`.\nAt each step: `area = min(height[left], height[right]) * (right - left)`. Update `maxArea`. Shift reference pointing to smaller height inward (since width decreases, keeping smaller height guarantees area cannot increase). Time O(N), Space O(1)."
   },
   {
     "id": "tp-4",
@@ -816,7 +816,7 @@ export const flashcards: Flashcard[] = [
     "category": "Trick",
     "difficulty": "Easy",
     "front": "How do you remove duplicates from a sorted array in-place?",
-    "back": "Maintain slow write pointer `i = 0`. Iterate fast pointer `j = 1` through N-1.\nIf `nums[j] != nums[i]`, increment `i++` and set `nums[i] = nums[j]`.\nReturn `i + 1` as the new length of distinct elements in O(N) time and O(1) space."
+    "back": "Maintain slow write reference `i = 0`. Iterate fast reference `j = 1` through N-1.\nIf `nums[j] != nums[i]`, increment `i++` and set `nums[i] = nums[j]`.\nReturn `i + 1` as the new length of distinct elements in O(N) time and O(1) space."
   },
   {
     "id": "sw-1",
@@ -848,7 +848,7 @@ export const flashcards: Flashcard[] = [
     "category": "Algorithm",
     "difficulty": "Hard",
     "front": "Explain Minimum Window Substring algorithm.",
-    "back": "Given string S and target T:\n1. Count character frequencies of T in map `targetCount`, track `requiredMatches = targetCount.size`.\n2. Expand right pointer `R`. If character satisfies frequency requirement, increment `formedMatches`.\n3. While `formedMatches == requiredMatches`, update min window candidate, then shrink left pointer `L` to find minimum valid window. Time O(|S| + |T|)."
+    "back": "Given string S and target T:\n1. Count character frequencies of T in map `targetCount`, track `requiredMatches = targetCount.size`.\n2. Expand right reference `R`. If character satisfies frequency requirement, increment `formedMatches`.\n3. While `formedMatches == requiredMatches`, update min window candidate, then shrink left reference `L` to find minimum valid window. Time O(|S| + |T|)."
   },
   {
     "id": "sw-5",
