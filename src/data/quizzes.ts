@@ -168,13 +168,13 @@ export const quizQuestions: QuizQuestion[] = [
       "O(n^2)"
     ],
     "correctAnswer": 0,
-    "explanation": "Inserting at the head requires creating a node, setting node.next = head, and updating head pointer, which takes O(1) constant time."
+    "explanation": "Inserting at the head requires creating a node, setting node.next = head, and updating head reference, which takes O(1) constant time."
   },
   {
     "id": "ll-2",
     "topic": "Linked Lists",
     "type": "MCQ",
-    "question": "Floyd's Cycle Detection Algorithm (Slow and Fast Pointers) moves pointers at what relative speeds?",
+    "question": "Floyd's Cycle Detection Algorithm (Slow and Fast Pointers) moves references at what relative speeds?",
     "options": [
       "Slow moves 1 step at a time, Fast moves 2 steps at a time",
       "Slow moves 1 step at a time, Fast moves 3 steps at a time",
@@ -182,7 +182,7 @@ export const quizQuestions: QuizQuestion[] = [
       "Slow moves backward, Fast moves forward"
     ],
     "correctAnswer": 0,
-    "explanation": "By moving slow pointer by 1 node and fast pointer by 2 nodes, if a cycle exists, fast pointer will catch up to slow pointer inside the cycle."
+    "explanation": "By moving slow reference by 1 node and fast reference by 2 nodes, if a cycle exists, fast reference will catch up to slow reference inside the cycle."
   },
   {
     "id": "ll-3",
@@ -203,7 +203,7 @@ export const quizQuestions: QuizQuestion[] = [
     "id": "ll-4",
     "topic": "Linked Lists",
     "type": "CodeOutput",
-    "question": "What value is returned when finding the middle node of list 1 -> 2 -> 3 -> 4 -> 5 using the slow and fast pointer snippet below?",
+    "question": "What value is returned when finding the middle node of list 1 -> 2 -> 3 -> 4 -> 5 using the slow and fast reference snippet below?",
     "codeSnippet": "function findMiddle(head) {\n  let slow = head, fast = head;\n  while (fast && fast.next) {\n    slow = slow.next;\n    fast = fast.next.next;\n  }\n  return slow.val;\n}",
     "options": [
       "3",
@@ -212,7 +212,7 @@ export const quizQuestions: QuizQuestion[] = [
       "5"
     ],
     "correctAnswer": 0,
-    "explanation": "When fast pointer reaches node 5, slow pointer will be at node 3, which is the middle element of the 5-node list."
+    "explanation": "When fast reference reaches node 5, slow reference will be at node 3, which is the middle element of the 5-node list."
   },
   {
     "id": "ll-5",
