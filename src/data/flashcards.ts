@@ -63,7 +63,7 @@ export const flashcards: Flashcard[] = [
     "topic": "Arrays",
     "category": "Concept",
     "difficulty": "Easy",
-    "front": "How does dynamic array capacity expansion work (e.g., std::vector or ArrayList)?",
+    "front": "How does dynamic array capacity expansion work (e.g., ArrayList)?",
     "back": "When a dynamic array exceeds its capacity, a new contiguous block with double (or 1.5x) the original capacity is allocated, existing elements are copied over, and the old memory is freed. The reallocation cost is amortized O(1) per push operation over time."
   },
   {
@@ -216,7 +216,7 @@ export const flashcards: Flashcard[] = [
     "category": "Definition",
     "difficulty": "Easy",
     "front": "Compare Adjacency Matrix vs Adjacency List for Graph representation.",
-    "back": "\u2022 Adjacency Matrix: V x V 2D array. Memory O(V^2). Edge lookup O(1). Best for dense graphs.\n\u2022 Adjacency List: Array of linked lists/vectors of length V. Memory O(V + E). Edge lookup O(degree). Best for sparse graphs."
+    "back": "\u2022 Adjacency Matrix: V x V 2D array. Memory O(V^2). Edge lookup O(1). Best for dense graphs.\n\u2022 Adjacency List: Array of linked lists/ArrayLists of length V. Memory O(V + E). Edge lookup O(degree). Best for sparse graphs."
   },
   {
     "id": "graph-2",
@@ -935,7 +935,7 @@ export const flashcards: Flashcard[] = [
     "topic": "Big-O Complexity",
     "category": "Concept",
     "difficulty": "Medium",
-    "front": "What is Amortized Analysis and why is std::vector push_back O(1) amortized?",
+    "front": "What is Amortized Analysis and why is ArrayList add() O(1) amortized?",
     "back": "Amortized analysis calculates average execution time per operation over a worst-case sequence of operations.\nFor dynamic array insertion: N-1 insertions cost O(1), and the N-th causes doubling array reallocation cost O(N). Total cost for N insertions is `O(N) + O(N) = O(2N)`, resulting in `O(2N) / N = O(1)` amortized per insert."
   },
   {
