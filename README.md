@@ -2,6 +2,8 @@
 
 A premium, modern web application dedicated entirely to mastering Data Structures & Algorithms. Features a personalized roadmap, multi-language code solutions, spaced repetition, quizzes, flashcards, a coding workspace, and comprehensive progress analytics.
 
+🔗 **Live Demo:** [https://leelaprasad6629.github.io/DSA_roadmap_application/](https://leelaprasad6629.github.io/DSA_roadmap_application/)
+
 ## ✨ Features
 
 - **📊 Dashboard** — Overall progress, current phase, daily streak, study calendar, heatmap, progress charts
@@ -19,7 +21,7 @@ A premium, modern web application dedicated entirely to mastering Data Structure
 - **🔍 Global Search** — Search topics, problems, patterns, and tags
 - **🔖 Bookmarks** — Bookmark topics, problems, notes, and algorithms
 - **🎨 Premium UI** — Dark/light mode, glassmorphism, smooth animations, responsive design
-- **📱 PWA** — Offline support, installable on mobile devices
+- **📱 PWA** — Offline support, installable on mobile devices, service worker caching
 
 ## 🛠️ Tech Stack
 
@@ -28,6 +30,8 @@ A premium, modern web application dedicated entirely to mastering Data Structure
 - **Backend:** Supabase (Auth + PostgreSQL)
 - **State:** Zustand with localStorage persistence
 - **Charts:** Recharts
+- **Code Editor:** CodeMirror with Dracula theme
+- **PWA:** vite-plugin-pwa (Workbox)
 - **Icons:** Lucide React
 
 ## 🚀 Getting Started
@@ -41,7 +45,32 @@ npm run dev
 
 # Build for production
 npm run build
+
+# Preview production build locally
+npm run preview
+
+# Lint code
+npm run lint
 ```
+
+## 🌐 Deployment (GitHub Pages)
+
+The app is configured for GitHub Pages deployment. The `vite.config.ts` includes the base path `/DSA_roadmap_application/`.
+
+```bash
+# Build the site
+npm run build
+
+# Deploy to gh-pages branch (requires gh-pages package)
+npm run deploy
+```
+
+Or manually:
+1. Run `npm run build`
+2. Push the contents of `dist/` to a `gh-pages` branch
+3. Enable GitHub Pages in repo settings → Pages → Source: `gh-pages` branch
+
+The site will be available at `https://<username>.github.io/DSA_roadmap_application/`
 
 ## 🔧 Supabase Setup
 
@@ -55,8 +84,8 @@ npm run build
 | Phase | Name | Description |
 |-------|------|-------------|
 | 0 | Programming & Logic Building | Variables, loops, conditionals, Java Fast I/O |
-| 1 | OOP & Core Programming | Classes, inheritance, polymorphism |
-| 2 | Collections / Java Collections Framework | Built-in data structures |
+| 1 | OOP & Core Programming | Classes, inheritance, polymorphism, dynamic dispatch |
+| 2 | Java Collections Framework | ArrayList, HashMap, HashSet, iterators |
 | 3 | Algorithm Analysis | Big-O, time/space complexity |
 | 4 | Mathematics & Number Theory | Primes, GCD, modular arithmetic |
 | 5 | Computing Fundamentals | Number systems, overflow |
