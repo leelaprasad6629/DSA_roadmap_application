@@ -10,7 +10,6 @@ import DailyPlanner from '@/components/planner/DailyPlanner';
 import WeeklyPlanner from '@/components/planner/WeeklyPlanner';
 import MonthlyPlanner from '@/components/planner/MonthlyPlanner';
 import RevisionSystem from '@/components/revision/RevisionSystem';
-import NotesSystem from '@/components/notes/NotesSystem';
 import Flashcards from '@/components/flashcards/Flashcards';
 import QuizSystem from '@/components/quiz/QuizSystem';
 import CodingWorkspace from '@/components/workspace/CodingWorkspace';
@@ -32,7 +31,6 @@ export default function App() {
         <Route path="/planner/weekly" element={<WeeklyPlanner />} />
         <Route path="/planner/monthly" element={<MonthlyPlanner />} />
         <Route path="/revision" element={<RevisionSystem />} />
-        <Route path="/notes" element={<NotesSystem />} />
         <Route path="/flashcards" element={<Flashcards />} />
         <Route path="/quiz" element={<QuizSystem />} />
         <Route path="/workspace" element={<CodingWorkspace />} />

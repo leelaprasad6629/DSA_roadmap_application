@@ -8,7 +8,6 @@ export default function Bookmarks() {
   const bookmarks = useStore((s) => s.progress.bookmarks);
   const removeBookmark = useStore((s) => s.removeBookmark);
   const bookmarkedProblems = useStore((s) => s.progress.bookmarkedProblems);
-  const bookmarkedNotes = useStore((s) => s.progress.notes).filter((n) => n.bookmarked);
   const navigate = useNavigate();
 
   const problemBookmarks = bookmarkedProblems.map((id) => problemsData.find((p) => p.id === id)).filter(Boolean);
@@ -18,10 +17,10 @@ export default function Bookmarks() {
     <div className="space-y-6 fade-in">
       <div>
         <h1 className="text-3xl font-bold gradient-text">Bookmarks</h1>
-        <p className="text-slate-500 dark:text-slate-400 mt-1">Your saved topics, problems, and notes</p>
+        <p className="text-slate-500 dark:text-slate-400 mt-1">Your saved topics and problems</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <h3 className="font-semibold mb-3 flex items-center gap-2"><Bookmark size={18} className="text-primary-500" /> Bookmarked Problems ({problemBookmarks.length})</h3>
           <div className="space-y-2">
@@ -46,19 +45,6 @@ export default function Bookmarks() {
               </div>
             ))}
             {topicBookmarks.length === 0 && <p className="text-xs text-slate-400 text-center py-2">No bookmarked topics</p>}
-          </div>
-        </Card>
-
-        <Card>
-          <h3 className="font-semibold mb-3 flex items-center gap-2"><Bookmark size={18} className="text-primary-500" /> Bookmarked Notes ({bookmarkedNotes.length})</h3>
-          <div className="space-y-2">
-            {bookmarkedNotes.map((n) => (
-              <div key={n.id} className="p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50 cursor-pointer" onClick={() => navigate('/notes')}>
-                <span className="text-sm font-medium">{n.title}</span>
-                <p className="text-xs text-slate-400 mt-0.5">{n.content.substring(0, 50)}...</p>
-              </div>
-            ))}
-            {bookmarkedNotes.length === 0 && <p className="text-xs text-slate-400 text-center py-2">No bookmarked notes</p>}
           </div>
         </Card>
       </div>

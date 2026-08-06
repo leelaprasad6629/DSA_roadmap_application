@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import {
-  LayoutDashboard, Map, Code2, Calendar, RotateCcw, StickyNote,
+  LayoutDashboard, Map, Code2, Calendar, RotateCcw,
   Layers, Brain, Terminal, BarChart3, Search, Bookmark, X,
 } from 'lucide-react';
 
@@ -12,7 +12,6 @@ const navItems = [
   { to: '/planner/weekly', icon: Calendar, label: 'Weekly Planner' },
   { to: '/planner/monthly', icon: Calendar, label: 'Monthly Planner' },
   { to: '/revision', icon: RotateCcw, label: 'Revision' },
-  { to: '/notes', icon: StickyNote, label: 'Notes' },
   { to: '/flashcards', icon: Layers, label: 'Flashcards' },
   { to: '/quiz', icon: Brain, label: 'Quiz' },
   { to: '/workspace', icon: Terminal, label: 'Coding Workspace' },

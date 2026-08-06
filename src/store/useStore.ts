@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type {
-  UserProgress, UserNote, Bookmark, RoadmapConfig,
+  UserProgress, Bookmark, RoadmapConfig,
   Language, Theme, RevisionItem, SavedCode, QuizScore,
 } from '@/types';
 
@@ -33,14 +33,6 @@ interface StoreState {
   setGoals: (daily: number, weekly: number, monthly: number) => void;
   setCurrentPhase: (phaseId: number) => void;
   setCurrentDay: (day: number) => void;
-
-  // Notes
-  addNote: (note: Omit<UserNote, 'id' | 'createdAt' | 'updatedAt'>) => void;
-  updateNote: (id: string, updates: Partial<UserNote>) => void;
-  deleteNote: (id: string) => void;
-  toggleNoteBookmark: (id: string) => void;
-
-  // Bookmarks
   addBookmark: (bookmark: Omit<Bookmark, 'id' | 'createdAt'>) => void;
   removeBookmark: (id: string) => void;
 
@@ -75,7 +67,6 @@ const defaultProgress: UserProgress = {
   dailyStreak: 0,
   lastStudyDate: '',
   studyCalendar: {},
-  notes: [],
   bookmarks: [],
   flashcardProgress: {},
   quizScores: [],
@@ -186,35 +177,6 @@ export const useStore = create<StoreState>()(
         })),
       setCurrentPhase: (phaseId) => set((s) => ({ progress: { ...s.progress, currentPhase: phaseId } })),
       setCurrentDay: (day) => set((s) => ({ progress: { ...s.progress, currentDay: day } })),
-
-      addNote: (note) =>
-        set((s) => {
-          const newNote: UserNote = {
-            ...note,
-            id: crypto.randomUUID(),
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-          };
-          return { progress: { ...s.progress, notes: [...s.progress.notes, newNote] } };
-        }),
-      updateNote: (id, updates) =>
-        set((s) => ({
-          progress: {
-            ...s.progress,
-            notes: s.progress.notes.map((n) => (n.id === id ? { ...n, ...updates, updatedAt: new Date().toISOString() } : n)),
-          },
-        })),
-      deleteNote: (id) =>
-        set((s) => ({
-          progress: { ...s.progress, notes: s.progress.notes.filter((n) => n.id !== id) },
-        })),
-      toggleNoteBookmark: (id) =>
-        set((s) => ({
-          progress: {
-            ...s.progress,
-            notes: s.progress.notes.map((n) => (n.id === id ? { ...n, bookmarked: !n.bookmarked } : n)),
-          },
-        })),
 
       addBookmark: (bookmark) =>
         set((s) => ({

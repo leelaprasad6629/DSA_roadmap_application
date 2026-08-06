@@ -117,7 +117,7 @@ export interface UserProgress {
   dailyStreak: number;
   lastStudyDate: string;
   studyCalendar: Record<string, number>;
-  notes: UserNote[];
+
   bookmarks: Bookmark[];
   flashcardProgress: Record<string, number>;
   quizScores: QuizScore[];
@@ -128,16 +128,6 @@ export interface UserProgress {
   monthlyGoal: number;
 }
 
-export interface UserNote {
-  id: string;
-  title: string;
-  content: string;
-  codeSnippets: string[];
-  topic?: string;
-  bookmarked: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
 
 export interface Bookmark {
   id: string;
