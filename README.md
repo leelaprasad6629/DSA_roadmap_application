@@ -54,9 +54,9 @@ npm run build
 
 | Phase | Name | Description |
 |-------|------|-------------|
-| 0 | Programming & Logic Building | Variables, loops, conditionals, I/O |
+| 0 | Programming & Logic Building | Variables, loops, conditionals, Java Fast I/O |
 | 1 | OOP & Core Programming | Classes, inheritance, polymorphism |
-| 2 | Collections / STL | Built-in data structures |
+| 2 | Collections / Java Collections Framework | Built-in data structures |
 | 3 | Algorithm Analysis | Big-O, time/space complexity |
 | 4 | Mathematics & Number Theory | Primes, GCD, modular arithmetic |
 | 5 | Computing Fundamentals | Number systems, overflow |
