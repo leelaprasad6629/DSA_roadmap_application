@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/DSA_roadmap_application/sw.js', { scope: '/DSA_roadmap_application/' })})}
