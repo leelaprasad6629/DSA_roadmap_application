@@ -48,6 +48,8 @@ export interface Problem {
   timeComplexity: string;
   spaceComplexity: string;
   solutions: Partial<Record<Language, string>>;
+  subtopic?: string;
+  topicId?: string;
 }
 
 export interface Flashcard {

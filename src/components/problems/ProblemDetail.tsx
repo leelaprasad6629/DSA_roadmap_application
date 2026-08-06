@@ -4,8 +4,11 @@ import { Button } from '@/components/ui/Button';
 import { useStore } from '@/store/useStore';
 import LanguageSelector from '@/components/topic/LanguageSelector';
 import { problems as problemsData } from '@/data/problems';
+import { runCode } from '@/lib/codeRunner';
 import { useState } from 'react';
-import { ArrowLeft, Bookmark, ExternalLink, Lightbulb, CheckCircle2, RotateCcw, X } from 'lucide-react';
+import { ArrowLeft, Bookmark, ExternalLink, Lightbulb, CheckCircle2, RotateCcw, X, Play, Loader2, Terminal, ChevronDown, Code2 } from 'lucide-react';
+import { Language } from '@/types';
+
 export default function ProblemDetail() {
   const { problemId } = useParams();
   const navigate = useNavigate();
@@ -15,6 +18,13 @@ export default function ProblemDetail() {
   const bookmarkedProblems = useStore((s) => s.progress.bookmarkedProblems);
   const solvedProblems = useStore((s) => s.progress.solvedProblems);
   const [showHint, setShowHint] = useState(0);
+  const [editableCode, setEditableCode] = useState<string | null>(null);
+  const [isRunning, setIsRunning] = useState(false);
+  const [output, setOutput] = useState('');
+  const [runError, setRunError] = useState(false);
+  const [stdin, setStdin] = useState('');
+  const [showStdin, setShowStdin] = useState(false);
+  const [showCodeEditor, setShowCodeEditor] = useState(false);
 
   const problem = problemsData.find((p) => p.id === problemId);
 
@@ -29,6 +39,19 @@ export default function ProblemDetail() {
 
   const isSolved = solvedProblems.includes(problem.id);
   const isBookmarked = bookmarkedProblems.includes(problem.id);
+
+  const currentCode = editableCode !== null ? editableCode : (problem.solutions?.[selectedLanguage] || '');
+  const hasSolution = problem.solutions && problem.solutions[selectedLanguage];
+
+  const handleRun = async () => {
+    setIsRunning(true);
+    setOutput('');
+    setRunError(false);
+    const result = await runCode(selectedLanguage, currentCode, stdin);
+    setOutput(result.output || (result.error || 'No output'));
+    setRunError(!result.success);
+    setIsRunning(false);
+  };
 
   return (
     <div className="space-y-6 fade-in">
@@ -47,6 +70,7 @@ export default function ProblemDetail() {
             <span className="text-slate-400">{problem.topic}</span>
             <span className="text-slate-400">•</span>
             <span className="text-slate-400">{problem.pattern}</span>
+            {problem.subtopic && <><span className="text-slate-400">•</span><span className="text-primary-500">{problem.subtopic}</span></>}
             {problem.isPremium && <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">Premium</span>}
           </div>
         </div>
@@ -110,10 +134,75 @@ export default function ProblemDetail() {
 
       <Card>
         <div className="flex items-center justify-between mb-3">
-          <h3 className="font-semibold">Solution</h3>
-          <LanguageSelector />
+          <h3 className="font-semibold flex items-center gap-2"><Code2 size={18} /> Solution & Run</h3>
+          <div className="flex items-center gap-3">
+            <LanguageSelector />
+            {hasSolution && (
+              <Button size="sm" onClick={() => setShowCodeEditor(!showCodeEditor)} variant={showCodeEditor ? 'secondary' : 'primary'}>
+                <span className="flex items-center gap-1">{showCodeEditor ? <><Play size={14} /> Run Mode</> : <><Code2 size={14} /> Edit & Run</>}</span>
+              </Button>
+            )}
+          </div>
         </div>
-        {problem.solutions && problem.solutions[selectedLanguage] ? (
+
+        {showCodeEditor && hasSolution ? (
+          <>
+            <div className="code-block">
+              <div className="flex items-center gap-1.5 mb-3">
+                <div className="w-3 h-3 rounded-full bg-red-500" />
+                <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                <div className="w-3 h-3 rounded-full bg-green-500" />
+                <span className="ml-2 text-xs text-slate-400">{selectedLanguage} — editable</span>
+              </div>
+              <textarea
+                value={currentCode}
+                onChange={(e) => setEditableCode(e.target.value)}
+                className="w-full min-h-[400px] bg-transparent text-slate-300 font-mono text-sm resize-none focus:outline-none"
+                spellCheck={false}
+              />
+            </div>
+
+            {/* Stdin */}
+            <button onClick={() => setShowStdin(!showStdin)} className="flex items-center gap-2 mt-3 text-sm text-slate-500 hover:text-primary-500">
+              <Terminal size={16} />
+              Custom Input (stdin)
+              <ChevronDown size={14} className={`transition-transform ${showStdin ? 'rotate-180' : ''}`} />
+            </button>
+            {showStdin && (
+              <textarea
+                value={stdin} onChange={(e) => setStdin(e.target.value)}
+                placeholder="Enter input for your program..."
+                className="w-full mt-2 min-h-[80px] p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                spellCheck={false}
+              />
+            )}
+
+            {/* Run button */}
+            <div className="mt-3">
+              <Button onClick={handleRun} disabled={isRunning}>
+                {isRunning ? <span className="flex items-center gap-1"><Loader2 size={16} className="animate-spin" /> Running...</span> : <span className="flex items-center gap-1"><Play size={16} /> Run Code</span>}
+              </Button>
+            </div>
+
+            {/* Output */}
+            {(output || isRunning) && (
+              <div className="mt-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <Terminal size={16} className={runError ? 'text-red-500' : 'text-green-500'} />
+                  <span className="text-sm font-semibold">{runError ? 'Error Output' : 'Output'}</span>
+                  {!isRunning && (
+                    <span className={`text-xs px-2 py-0.5 rounded-full ${runError ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'}`}>
+                      {runError ? 'Failed' : 'Success'}
+                    </span>
+                  )}
+                </div>
+                <pre className={`text-sm font-mono whitespace-pre-wrap p-4 rounded-xl min-h-[60px] ${runError ? 'bg-red-50 dark:bg-red-900/10 text-red-600 dark:text-red-400' : 'bg-slate-50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-300'}`}>
+                  {isRunning ? 'Executing...' : output}
+                </pre>
+              </div>
+            )}
+          </>
+        ) : (
           <div className="code-block">
             <div className="flex items-center gap-1.5 mb-3">
               <div className="w-3 h-3 rounded-full bg-red-500" />
@@ -121,10 +210,12 @@ export default function ProblemDetail() {
               <div className="w-3 h-3 rounded-full bg-green-500" />
               <span className="ml-2 text-xs text-slate-400">{selectedLanguage}</span>
             </div>
-            <pre className="text-slate-300 overflow-x-auto">{problem.solutions[selectedLanguage]}</pre>
+            {hasSolution ? (
+              <pre className="text-slate-300 overflow-x-auto">{currentCode}</pre>
+            ) : (
+              <pre className="text-slate-400">// Solution for {selectedLanguage} coming soon</pre>
+            )}
           </div>
-        ) : (
-          <div className="code-block"><pre className="text-slate-400">// Solution for {selectedLanguage} coming soon</pre></div>
         )}
       </Card>
 

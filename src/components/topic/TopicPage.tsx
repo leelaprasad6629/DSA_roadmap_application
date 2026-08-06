@@ -1,12 +1,13 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { phases } from '@/data/phases';
+import { problems as problemsData, getProblemsByTopicId } from '@/data/problems';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import LanguageSelector from './LanguageSelector';
 import CodeBlock from './CodeBlock';
 import { useStore } from '@/store/useStore';
-import { ArrowLeft, CheckCircle2, AlertTriangle, Lightbulb, BookOpen, Clock, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { ArrowLeft, CheckCircle2, AlertTriangle, Lightbulb, BookOpen, Clock, ChevronRight, ExternalLink, Code2 } from 'lucide-react';
+import { useState, useMemo } from 'react';
 
 export default function TopicPage() {
   const { phaseId, topicId } = useParams();
@@ -19,6 +20,19 @@ export default function TopicPage() {
   const phase = phases.find((p) => p.id === parseInt(phaseId || '0'));
   const topic = phase?.topics.find((t) => t.id === topicId);
 
+  const topicProblems = useMemo(() => getProblemsByTopicId(topicId || ''), [topicId]);
+
+  // Group problems by subtopic
+  const problemsBySubtopic = useMemo(() => {
+    const map = new Map<string, typeof problemsData>();
+    for (const p of topicProblems) {
+      const key = p.subtopic || 'General';
+      if (!map.has(key)) map.set(key, []);
+      map.get(key)!.push(p);
+    }
+    return map;
+  }, [topicProblems]);
+
   if (!phase || !topic) {
     return (
       <div className="text-center py-20">
@@ -29,6 +43,11 @@ export default function TopicPage() {
   }
 
   const isComplete = completedTopics.includes(topic.id);
+  const difficultyColors: Record<string, string> = {
+    Easy: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+    Medium: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
+    Hard: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+  };
 
   return (
     <div className="space-y-6 fade-in">
@@ -59,11 +78,25 @@ export default function TopicPage() {
           <Clock size={18} className="text-slate-400" />
           <span className="text-sm text-slate-500">Estimated study time: {topic.estimatedHours} hours</span>
         </div>
-        <div className="flex items-center gap-4 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
           <h3 className="font-semibold">Subtopics:</h3>
-          {topic.subtopics.map((s, i) => (
-            <span key={i} className="text-xs px-3 py-1 rounded-full bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400">{s}</span>
-          ))}
+          {topic.subtopics.map((s, i) => {
+            const hasProblems = problemsBySubtopic.has(s);
+            return (
+              <span
+                key={i}
+                className={`text-xs px-3 py-1 rounded-full cursor-pointer transition-colors ${
+                  hasProblems
+                    ? 'bg-primary-200 text-primary-800 dark:bg-primary-900/50 dark:text-primary-300 hover:bg-primary-300 dark:hover:bg-primary-800'
+                    : 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400'
+                }`}
+                title={hasProblems ? `${problemsBySubtopic.get(s)!.length} practice problems` : ''}
+              >
+                {hasProblems && <Code2 size={10} className="inline mr-1" />}
+                {s}
+              </span>
+            );
+          })}
         </div>
       </Card>
 
@@ -152,6 +185,47 @@ export default function TopicPage() {
           ))}
         </ul>
       </Card>
+
+      {/* Practice Problems mapped to subtopics */}
+      {topicProblems.length > 0 && (
+        <Card>
+          <h3 className="font-semibold mb-4 flex items-center gap-2"><Code2 size={18} className="text-primary-500" /> Practice Problems for Subtopics</h3>
+          <div className="space-y-5">
+            {topic.subtopics.map((subtopic, si) => {
+              const subProblems = problemsBySubtopic.get(subtopic) || [];
+              if (subProblems.length === 0) return null;
+              return (
+                <div key={si}>
+                  <h4 className="text-sm font-semibold text-primary-600 dark:text-primary-400 mb-2 flex items-center gap-1">
+                    {subtopic}
+                    <span className="text-xs text-slate-400 font-normal">({subProblems.length})</span>
+                  </h4>
+                  <div className="space-y-2 ml-4">
+                    {subProblems.map((p) => (
+                      <div
+                        key={p.id}
+                        onClick={() => navigate(`/problems/${p.id}`)}
+                        className="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-colors group"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${difficultyColors[p.difficulty] || difficultyColors.Medium}`}>
+                            {p.difficulty}
+                          </span>
+                          <span className="text-sm font-medium group-hover:text-primary-500 transition-colors">
+                            #{p.number} {p.name}
+                          </span>
+                          <span className="text-xs text-slate-400">{p.pattern}</span>
+                        </div>
+                        <ExternalLink size={14} className="text-slate-400 group-hover:text-primary-500" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </Card>
+      )}
 
       {/* Code Examples */}
       <Card>
